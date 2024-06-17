@@ -2,4 +2,9 @@
 ** xref:02-introduction.adoc[*01* - Migration Workshop Introduction]
 ** xref:03-assessment.adoc[*02* - Migration Assessment]
 ** xref:04-analyze.adoc[*03* - Migration Analysis]
-* 
+* xref:10-security-infrastructure-introduction.adoc[Security & Infrastructure]
+** xref:11-app-mgmt-basics.adoc[*04* - Application Management Basics]
+** xref:12-app-storage-basics.adoc[*05* - Application Storage Basics]
+** xref:13-networking.adoc[*06* - Networking]
+** xref:14-acs-vulnerability.adoc[*07* - ACS Vulnerability Management]
+** xref:15-acm.adoc[*08* - ACM multicluster Management]
