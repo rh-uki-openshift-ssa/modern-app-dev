@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: OpenShift Roadshow Workshop 2024</title>
+    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/21-taints-tolerations.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () { 
+      const urlParams = new URLSearchParams(window.location.search);
+      const clusterName = urlParams.get('CLUSTER_SUBDOMAIN');
+      const projectName = urlParams.get('PROJECT');
+      if (clusterName) {
+        showCluster( clusterName );
+      }
+      else {
+        showClusterForm();
+      }
+
+      if (projectName) {
+        showProject( projectName );
+      } else {
+        showProjectForm();
+      }
+    } );
+
+
+    function sliceCluster(clusterName){
+      if (clusterName.length > 70) {
+          return "..." + clusterName.slice(35);
+      } else {
+          return clusterName;
+      }
+    }
+
+    function showCluster( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "none";
+      document.getElementById('navbar-form-filled').style.display = "flex";
+      document.getElementById('cluster_subdomain').textContent = sliceCluster(clusterName);
+      document.getElementById('clusterfield2').value = clusterName;
+
+    }
+
+    function showClusterForm( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "flex";
+      document.getElementById('navbar-form-filled').style.display = "none";
+    }
+
+    function gowithcluster() {
+      elClusterInput = document.getElementById('clusterfield');
+      elProjectInput = document.getElementById('projectfield2');
+
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+    function showProject( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "none";
+      document.getElementById('navbar-form-project-filled').style.display = "flex";
+      document.getElementById('project').textContent = projectName;
+      document.getElementById('projectfield2').value = projectName;
+    }
+
+    function showProjectForm( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "flex";
+      document.getElementById('navbar-form-project-filled').style.display = "none";
+    }
+
+    function gowithproject() {
+      elProjectInput = document.getElementById('projectfield');
+      elClusterInput = document.getElementById('clusterfield2');
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+  </script>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="http://localhost:3000/rhs-openshift-starter-guides/index.html">OpenShift Roadshow Workshop 2024</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item" id="navbar-form-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithcluster();">
+            <input size="40" id="clusterfield" type="text" placeholder="Enter Cluster Subdomain">
+            <input type="hidden" id="projectfield2" name="projectfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="cluster_subdomain"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+
+         <div class="navbar-item" id="navbar-form-project-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithproject();">
+            <input size="40" id="projectfield" type="text" placeholder="Enter Project Name">
+            <input type="hidden" id="clusterfield2" name="clusterfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-project-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="project"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+<!---
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+--->
+      </div>
+    </div>
+  </nav>
+</header><div class="body">
+<div class="nav-container" data-component="ocp-roadshow-workshop" data-version="4.15">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">OCP Roadshow Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-modernisation-introduction.html">Application Migration &amp; Modernisation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-introduction.html"><strong>01</strong> - Migration Workshop Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-assessment.html"><strong>02</strong> - Migration Assessment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-analyze.html"><strong>03</strong> - Migration Analysis</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#08-ocp-ops-intro">MAD Roadshow Ops Track</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="09-installation-and-verification.html"><strong>01</strong> - Installation and Verificiation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="10-application-management-basics.html"><strong>02</strong> - Application Management Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-application-storage-basics.html"><strong>03</strong> - Application Storage Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="12-machinesets-machines-nodes.html"><strong>04</strong> - MachineSets, Machines, and Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-infrastructure-nodes-and-operators.html"><strong>05</strong> - Infrastructure Nodes and Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="14-openshift-logging-wth-loki.html"><strong>06</strong> - OpenShift Logging with Loki</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-external-authentication.html"><strong>07</strong> - External (LDAP) Authentication Providers, Users, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="16-openshift-monitoring.html"><strong>08</strong> - OpenShift Monitoring with Prometheus</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="17-project-template-quota-limits.html"><strong>09</strong> - Project Request Template, Quotas, Limits</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="18-openshift-networking-networkpolicy.html"><strong>10</strong> - OpenShift Networking and NetworkPolicy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="19-disable-self-project-provisioning.html"><strong>11</strong> - Disabling Project Self-Provisioning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="20-cluster-resource-quota.html"><strong>12</strong> - Cluster Resource Quotas</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="21-taints-tolerations.html"><strong>13</strong> - Taints and Tolerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="22-vulnerability-scanning-acs.html"><strong>14</strong> - Vulnerability Scanning with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="23-devsecops-acs.html"><strong>15</strong> - DevSecOps with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="24-multicluster-with-acm.html"><strong>16</strong> - Multicluster management with ACM</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCP Roadshow Workshop</span>
+    <span class="version">4.15</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCP Roadshow Workshop</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">4.15</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">OCP Roadshow Workshop</a></li>
+    <li>MAD Roadshow Ops Track</li>
+    <li><a href="21-taints-tolerations.html"><strong>13</strong> - Taints and Tolerations</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/mkimberl/Documents/source/github/modern-app-dev/documentation/modules/ROOT/pages/21-taints-tolerations.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="paragraph">
+<p>Taints and Tolerations</p>
+</div>
+<div class="paragraph">
+<p>Taints and Tolerations
+In a previous lab, you created "infra" nodes leveraging nodeSelector to control where the workload lands. You saw how you can set nodes to perform certain tasks. The nodeSelector in the nodePlacement attracts pods to a set of nodes. But what if you want the opposite? What if you want to repel pods?</p>
+</div>
+<div class="paragraph">
+<p>Having a taint in place will make sure a pod does NOT run on the tainted node.</p>
+</div>
+<div class="paragraph">
+<p>Some usecases include:</p>
+</div>
+<div class="paragraph">
+<p>A node (or a group of nodes) in the cluster is reserved for special purposes</p>
+</div>
+<div class="paragraph">
+<p>Nodes having specialized hardware for specific tasks (like a GPU)</p>
+</div>
+<div class="paragraph">
+<p>Some nodes may be licensed for some software running on it</p>
+</div>
+<div class="paragraph">
+<p>Nodes can be in different network zones for compliance reasons</p>
+</div>
+<div class="paragraph">
+<p>You may want to troubleshoot a misbehaving node</p>
+</div>
+<div class="paragraph">
+<p>In this lab we’ll explore how to use taints and tolerations to control where workloads land.</p>
+</div>
+<div class="paragraph">
+<p>Background
+Taints and tolerations work in tandem to ensure that workloads are not scheduled onto certain nodes. Once a node is tainted, that node should not accept any workload that does not tolerate the taint(s). Tolerations that are applied to these workloads will allow (but do not require) the corresponding pods to schedule onto nodes with matching taints.</p>
+</div>
+<div class="paragraph">
+<p>You will have to use nodeSelector along with taints and tolerations to have workloads ALWAYS land on a specific node.
+Examine node labels
+In order to examine the nodes, make sure you’re running as kubeadmin</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+List the current worker nodes, ignoring infra nodes and storage nodes.</p>
+</div>
+<div class="paragraph">
+<p>oc get nodes -l 'node-role.kubernetes.io/worker,!node-role.kubernetes.io/infra,!cluster.ocs.openshift.io/openshift-storage'
+Depending on which labs you’ve done, you may have 3 more more nodes with the worker label set.</p>
+</div>
+<div class="paragraph">
+<p>Now, let’s look to see if there are any taints added to these workers.</p>
+</div>
+<div class="paragraph">
+<p>oc describe nodes -l 'node-role.kubernetes.io/worker,!node-role.kubernetes.io/infra,!cluster.ocs.openshift.io/openshift-storage' | grep Taint
+There shouldn’t be any taints assinged to these workers.</p>
+</div>
+<div class="paragraph">
+<p>Deploying test application
+For this exercise we will be deploying an app to test with.</p>
+</div>
+<div class="paragraph">
+<p>Before you deploy this app, you’ll need to label your nodes for the duration of this exercise. The application deploys on nodes labeled appnode=welcome-php.</p>
+</div>
+<div class="paragraph">
+<p>oc get nodes -l 'node-role.kubernetes.io/worker,!node-role.kubernetes.io/infra,!cluster.ocs.openshift.io/openshift-storage' -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | xargs -I{} oc label node {} appnode=welcome-php
+To label a node, you pass the node name with a key=value pair. Example: oc label node worker.example.com appnode=welcome-php
+Verify that the nodes were labeled, taking note of the name of the node(s).</p>
+</div>
+<div class="paragraph">
+<p>oc get nodes -l appnode=welcome-php
+You can now deploy the application using the YAML manifest that is provided in the home directory.</p>
+</div>
+<div class="paragraph">
+<p>oc create -f ~/support/welcome-php.yaml
+This creates the following objects</p>
+</div>
+<div class="paragraph">
+<p>The namespace tt-lab</p>
+</div>
+<div class="paragraph">
+<p>A deployment called welcome-php that’s running a sample php app</p>
+</div>
+<div class="paragraph">
+<p>A service called welcome-php that listens on port 8080</p>
+</div>
+<div class="paragraph">
+<p>A route called welcome-php</p>
+</div>
+<div class="paragraph">
+<p>We will be working on the tt-lab project, so switch to it now.</p>
+</div>
+<div class="paragraph">
+<p>oc project tt-lab
+Now scale the pods to equal to the number of nodes we have. The default scheduler will attempt to evenly distribute the app. Also we’ll wait for the rollout to complete.</p>
+</div>
+<div class="paragraph">
+<p>NODE_NUMBER=$(oc get nodes --no-headers -l appnode=welcome-php | wc -l)
+oc scale deploy welcome-php --replicas=${NODE_NUMBER}
+oc rollout status deploy welcome-php
+If the pods are not evenly distributed between nodes, you may have to run oc delete pods --all to let them rebalance.
+Verify that the pods are spread evenly accross workers. There should be one pod for each node.</p>
+</div>
+<div class="paragraph">
+<p>clear
+oc get pods -o=custom-columns=NAME:.metadata.name,NODE:.spec.nodeName
+oc get nodes -l appnode=welcome-php
+Tainting nodes
+We will now taint a node, so it’ll reject workloads. First, we will go over what each taint does. There are 3 basic taints that you can set.</p>
+</div>
+<div class="paragraph">
+<p>key=value:NoSchedule</p>
+</div>
+<div class="paragraph">
+<p>key=value:NoExecute</p>
+</div>
+<div class="paragraph">
+<p>key=value:PreferNoSchedule</p>
+</div>
+<div class="paragraph">
+<p>The key in this case is any string, up to 253 characters. The key must begin with a letter or number, and may contain letters, numbers, hyphens, dots, and underscores.</p>
+</div>
+<div class="paragraph">
+<p>The value here is any string, up to 63 characters. The value must begin with a letter or number, and may contain letters, numbers, hyphens, dots, and underscores.</p>
+</div>
+<div class="paragraph">
+<p>The 3 "effects" do the following:</p>
+</div>
+<div class="paragraph">
+<p>NoSchedule - New pods that do not match the taint are not scheduled onto that node. Existing pods on the node remain.</p>
+</div>
+<div class="paragraph">
+<p>NoExecute - New pods that do not match the taint cannot be scheduled onto that node. Existing pods on the node that do not have a matching toleration are removed.</p>
+</div>
+<div class="paragraph">
+<p>PreferNoSchedule - New pods that do not match the taint might be scheduled onto that node, but the scheduler tries not to. Existing pods on the node remain.</p>
+</div>
+<div class="paragraph">
+<p>There is another component called the operator. We’ll go over the operator in detail in the "tolerations" section.</p>
+</div>
+<div class="paragraph">
+<p>For this lab we will taint the first node that’s not an infra or storage node with welcome-php=run:NoSchedule. This ensures all new pods (without a proper toleration) will NOT schedule to this node.</p>
+</div>
+<div class="paragraph">
+<p>TTNODE=$(oc get nodes -l 'node-role.kubernetes.io/worker,!node-role.kubernetes.io/infra,!cluster.ocs.openshift.io/openshift-storage' -o jsonpath='{range .items[0]}{.metadata.name}')
+oc adm taint node ${TTNODE} welcome-php=run:NoSchedule
+The syntax is: oc adm taint node ${nodename} key=value:Effect
+Examine the nodes we deployed on and see that the taint is applied to one of the nodes.</p>
+</div>
+<div class="paragraph">
+<p>oc describe nodes -l appnode=welcome-php | grep Taint
+We used NoSchedule for the effect, so a pod should still be there. Remember that NoSchedule only stops new pods from spawning on the node (the command should return a 1)</p>
+</div>
+<div class="paragraph">
+<p>oc get pods -o wide | grep -c ${TTNODE}
+Let’s delete the pods and wait for the replicaSet to redeploy them.</p>
+</div>
+<div class="paragraph">
+<p>oc delete pods --all
+oc rollout status deploy welcome-php
+Since our deployment doesn’t have a toleration, the scheduler will deploy the pods on all nodes except the one with a taint. This command should return a 0</p>
+</div>
+<div class="paragraph">
+<p>oc get pods -o wide | grep -c ${TTNODE}
+Examine where the pods are running.</p>
+</div>
+<div class="paragraph">
+<p>clear
+oc get pods -o=custom-columns=NAME:.metadata.name,NODE:.spec.nodeName
+oc get nodes -l appnode=welcome-php
+Tolerations
+A toleration is a way for pods to "tolerate" (or "ignore") a node’s taint during scheduling. Tolerations are applied in the podSpec, and is in the following form.</p>
+</div>
+<div class="paragraph">
+<p>tolerations:
+- key: "welcome-php"
+  operator: "Equal"
+  value: "run"
+  effect: "NoSchedule"
+If the toleration "matches" then the scheduler will schedule the workload on this node (if need be…​remember, it’s not a guarantee). Note that you have to match the key, value, and effect. There is also something called an operator.</p>
+</div>
+<div class="paragraph">
+<p>The operator can be set to Equal or Exists, depending on the fuction you want.</p>
+</div>
+<div class="paragraph">
+<p>Equal - The key, value, and effect parameters must match. This is the default setting if nothing is provided.</p>
+</div>
+<div class="paragraph">
+<p>Exists - The key and the effect parameters must match. You must leave a blank value parameter, which matches any.</p>
+</div>
+<div class="paragraph">
+<p>We’ll apply this toleration in the spec.template.spec section of the deployment.</p>
+</div>
+<div class="paragraph">
+<p>oc patch deployment welcome-php --patch '{"spec":{"template":{"spec":{"tolerations":[{"key":"welcome-php","operator":"Equal","value":"run","effect":"NoSchedule"}]}}}}'
+Patching triggers another deployment so we’ll wait for it to finish rolling out.</p>
+</div>
+<div class="paragraph">
+<p>oc rollout status deploy welcome-php
+You can see the toleration config under .spec.template.spec.tolerations in the deployment YAML</p>
+</div>
+<div class="paragraph">
+<p>oc get deployment welcome-php -o yaml
+Now, since we have the toleration in place, we should be running on the node with the taint (this should return 1)</p>
+</div>
+<div class="paragraph">
+<p>oc get pods -o wide | grep -c ${TTNODE}
+Now when you list all pods, they should be now spread evenly.</p>
+</div>
+<div class="paragraph">
+<p>clear
+oc get pods -o=custom-columns=NAME:.metadata.name,NODE:.spec.nodeName
+oc get nodes -l appnode=welcome-php
+To read more about taints and tolerations, you can take a look at the Official Documentation.</p>
+</div>
+<div class="paragraph">
+<p>Clean Up
+Make sure you login as kubeadmin for the next lab.</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+Other labs may be affected by taints, so let’s undo what we did:</p>
+</div>
+<div class="paragraph">
+<p>oc delete project tt-lab
+oc adm taint node ${TTNODE} welcome-php-
+oc get nodes -l 'node-role.kubernetes.io/worker,!node-role.kubernetes.io/infra,!cluster.ocs.openshift.io/openshift-storage' -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | xargs -I{} oc label node {} appnode-
+Make sure the nodes have that taint removed</p>
+</div>
+<div class="paragraph">
+<p>oc describe nodes -l 'node-role.kubernetes.io/worker,!node-role.kubernetes.io/infra,!cluster.ocs.openshift.io/openshift-storage' | grep Taint
+Also, verify that the label does not exist on the nodes we were working on. This command shouldn’t return any nodes.</p>
+</div>
+<div class="paragraph">
+<p>oc get nodes -l appnode=welcome-php</p>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

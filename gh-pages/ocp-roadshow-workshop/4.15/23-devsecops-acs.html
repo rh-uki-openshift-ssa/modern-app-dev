@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: OpenShift Roadshow Workshop 2024</title>
+    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/23-devsecops-acs.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () { 
+      const urlParams = new URLSearchParams(window.location.search);
+      const clusterName = urlParams.get('CLUSTER_SUBDOMAIN');
+      const projectName = urlParams.get('PROJECT');
+      if (clusterName) {
+        showCluster( clusterName );
+      }
+      else {
+        showClusterForm();
+      }
+
+      if (projectName) {
+        showProject( projectName );
+      } else {
+        showProjectForm();
+      }
+    } );
+
+
+    function sliceCluster(clusterName){
+      if (clusterName.length > 70) {
+          return "..." + clusterName.slice(35);
+      } else {
+          return clusterName;
+      }
+    }
+
+    function showCluster( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "none";
+      document.getElementById('navbar-form-filled').style.display = "flex";
+      document.getElementById('cluster_subdomain').textContent = sliceCluster(clusterName);
+      document.getElementById('clusterfield2').value = clusterName;
+
+    }
+
+    function showClusterForm( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "flex";
+      document.getElementById('navbar-form-filled').style.display = "none";
+    }
+
+    function gowithcluster() {
+      elClusterInput = document.getElementById('clusterfield');
+      elProjectInput = document.getElementById('projectfield2');
+
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+    function showProject( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "none";
+      document.getElementById('navbar-form-project-filled').style.display = "flex";
+      document.getElementById('project').textContent = projectName;
+      document.getElementById('projectfield2').value = projectName;
+    }
+
+    function showProjectForm( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "flex";
+      document.getElementById('navbar-form-project-filled').style.display = "none";
+    }
+
+    function gowithproject() {
+      elProjectInput = document.getElementById('projectfield');
+      elClusterInput = document.getElementById('clusterfield2');
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+  </script>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="http://localhost:3000/rhs-openshift-starter-guides/index.html">OpenShift Roadshow Workshop 2024</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item" id="navbar-form-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithcluster();">
+            <input size="40" id="clusterfield" type="text" placeholder="Enter Cluster Subdomain">
+            <input type="hidden" id="projectfield2" name="projectfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="cluster_subdomain"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+
+         <div class="navbar-item" id="navbar-form-project-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithproject();">
+            <input size="40" id="projectfield" type="text" placeholder="Enter Project Name">
+            <input type="hidden" id="clusterfield2" name="clusterfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-project-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="project"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+<!---
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+--->
+      </div>
+    </div>
+  </nav>
+</header><div class="body">
+<div class="nav-container" data-component="ocp-roadshow-workshop" data-version="4.15">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">OCP Roadshow Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-modernisation-introduction.html">Application Migration &amp; Modernisation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-introduction.html"><strong>01</strong> - Migration Workshop Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-assessment.html"><strong>02</strong> - Migration Assessment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-analyze.html"><strong>03</strong> - Migration Analysis</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#08-ocp-ops-intro">MAD Roadshow Ops Track</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="09-installation-and-verification.html"><strong>01</strong> - Installation and Verificiation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="10-application-management-basics.html"><strong>02</strong> - Application Management Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-application-storage-basics.html"><strong>03</strong> - Application Storage Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="12-machinesets-machines-nodes.html"><strong>04</strong> - MachineSets, Machines, and Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-infrastructure-nodes-and-operators.html"><strong>05</strong> - Infrastructure Nodes and Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="14-openshift-logging-wth-loki.html"><strong>06</strong> - OpenShift Logging with Loki</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-external-authentication.html"><strong>07</strong> - External (LDAP) Authentication Providers, Users, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="16-openshift-monitoring.html"><strong>08</strong> - OpenShift Monitoring with Prometheus</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="17-project-template-quota-limits.html"><strong>09</strong> - Project Request Template, Quotas, Limits</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="18-openshift-networking-networkpolicy.html"><strong>10</strong> - OpenShift Networking and NetworkPolicy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="19-disable-self-project-provisioning.html"><strong>11</strong> - Disabling Project Self-Provisioning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="20-cluster-resource-quota.html"><strong>12</strong> - Cluster Resource Quotas</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="21-taints-tolerations.html"><strong>13</strong> - Taints and Tolerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="22-vulnerability-scanning-acs.html"><strong>14</strong> - Vulnerability Scanning with ACS</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="23-devsecops-acs.html"><strong>15</strong> - DevSecOps with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="24-multicluster-with-acm.html"><strong>16</strong> - Multicluster management with ACM</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCP Roadshow Workshop</span>
+    <span class="version">4.15</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCP Roadshow Workshop</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">4.15</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">OCP Roadshow Workshop</a></li>
+    <li>MAD Roadshow Ops Track</li>
+    <li><a href="23-devsecops-acs.html"><strong>15</strong> - DevSecOps with ACS</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/mkimberl/Documents/source/github/modern-app-dev/documentation/modules/ROOT/pages/23-devsecops-acs.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="paragraph">
+<p>DevSecOps with ACS</p>
+</div>
+<div class="paragraph">
+<p>Using OpenShift Pipelines to Automate Red Hat Advanced Cluster Security for Kubernetes
+Introduction
+This workshop will discuss how OpenShift Pipelines, based on the Tekton open source project, can be used to automate the execution of Red Hat Advanced Cluster Security for Kubernetes as part of a more comprehensive continuous integration solution. The objective is to bring into the continuous integration process the validation of Kubernetes resources such that any violations against defined policy can be addressed earlier in the development life cycle.</p>
+</div>
+<div class="paragraph">
+<p>Pipeline Requirements and Necessary Features
+RHACS Command Line Interface
+Red Hat Advanced Cluster Security for Kubernetes has a command line interface (roxctl) for evaluating images and resources against policy definitions held on the RHACS server. The command line interface may be downloaded from the RHACS web user interface for ad-hoc use, and in the automation steps presented here, roxctl is downloaded from the RHACS server during each execution of the analysis. This ensures that the correct version matching the server is always used.</p>
+</div>
+<div class="paragraph">
+<p>roxctl Analysis Options
+The roxctl command line interface has several options for resource and image analysis. Of particular interest in this blog is the "deployment" option, which is traditionally used to check for deployment readiness of Kubernetes resources. By using this option during the build phase of development, teams can get a much earlier indication of deployment issues rather than waiting until deployment time. This enables teams to fix the problems during development, lowering costs and leading to smoother deployments.</p>
+</div>
+<div class="paragraph">
+<p>Continuous Integration and roxctl Process
+The CI process in the example below takes advantage of the tasks, skeleton pipeline, and pipeline run resources that users can build into their own wider OpenShift Pipelines process. The resources and their interaction are shown in figure 1:</p>
+</div>
+<div class="paragraph">
+<p>tekton 1
+Figure 1: OpenShift Pipeline process</p>
+</div>
+<div class="paragraph">
+<p>Pipeline Run Resource
+The OpenShift Pipelines "pipeline run" resource calls the pipeline resource, passing with it the required parameters. Some of the parameters are highlighted in figure 1 above, and all are described in the table below. The pipeline run defines a workspace on a 10 Mb persistent volume claim called "files," to which the source assets are cloned, and the results files are written. If you wish to add the tasks described here to an existing OpenShift Pipelines process, add the parameter definitions and the workspace volume to your existing pipeline run.</p>
+</div>
+<div class="paragraph">
+<p>Parameter	Description	Used by task
+acs_central_endpoint
+The name of a secret that contains the URL of the RHACS central server.
+Resource deployment check
+acs_api_token
+The name of a secret that contains the access token generated within the RHACS web user interface. This is a continuous integration access token as described here.
+Resource deployment check
+The above two parameters can reference a single secret containing both data items.
+git-url
+The URL of the GitHub repository that contains the resources to be validated.
+Git clone workspace
+git-revision
+The identifier to be used to check out the content. (branch, tag, sha, ref…)
+Git clone workspace
+file-location-in-git-repo
+The directory containing the resources to be examined.
+Resource deployment check
+recursive-search
+If 'true,' the above path will be searched recursively for all files with the extension yaml or yml.
+Resource deployment check
+Pipeline Resource
+The OpenShift Pipelines "pipeline" resource in the GitHub repository mentioned above orchestrates the execution of the tasks and the passing of parameters between tasks. Further information on the pipeline use is given in the section "Making a decision based on the scan result."</p>
+</div>
+<div class="paragraph">
+<p>Workshop Setup
+Deploy the Pipeline Assets
+The assets described below are available in a public GitHub repository <a href="https://github.com/mfosterrox/demo.git" class="bare">https://github.com/mfosterrox/demo.git</a>. To deploy the assets, run the following:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Skip the git clone command if you have the existing folder ready, But you will need to the commands after to ensure all of the resources are available.
+git clone <a href="https://github.com/openshiftdemos/openshift-ops-workshops" class="bare">https://github.com/openshiftdemos/openshift-ops-workshops</a> acs-workshop
+export TUTORIAL_HOME="$(pwd)/acs-workshop"
+kubectl apply -f $TUTORIAL_HOME/workshop/demo-apps/configuration --recursive
+kubectl apply -f $TUTORIAL_HOME/workshop/demo-apps/ --recursive
+NOTE This command applies a plethora of manifests to your environment. The important part is that the deployments are up and running.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Run the following command and ensure that the applications are up and running
+kubectl get deployments -l demo=acs -A
+Output</p>
+</div>
+<div class="paragraph">
+<p>NAMESPACE      NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+backend        api-server         1/1     1            1           0d
+frontend       asset-cache        1/1     1            1           0d
+log4shell      log4shell-app      3/3     3            3           0d
+medical        reporting          1/1     1            1           0d
+operations     jump-host          1/1     1            1           0d
+payments       visa-processor     1/1     1            1           0d
+spring4shell   spring4shell-app   3/3     3            3           0d
+Image Scan Pod Task
+The first of two tasks in the pipeline is the image scan test task. The task starts by asking the user for an image to scan. Next, the roxctl CLI will send this information to central and ask for an analysis. ACS Central will send back all the fixable and nonfixable vulnerabilities associated with the image. The image scan file will show you the necessary variables, the steps required to complete the scan, and the script itself.</p>
+</div>
+<div class="paragraph">
+<p>To see the image scan task, run the following on the command line;</p>
+</div>
+<div class="paragraph">
+<p>cat $TUTORIAL_HOME/workshop/demo-apps/pipelines/tasks/rox-image-scan-task.yml
+After the scan is completed, we must check if the container violates specific policies.</p>
+</div>
+<div class="paragraph">
+<p>Image Check Test Task
+The image check test will tell ACS central to check the scanned image against the policies enabled in ACS. The file is extremely similar to the image scan test with the roxctl command being the main difference in the file.</p>
+</div>
+<div class="paragraph">
+<p>To see the image check task, run the following on the command line;</p>
+</div>
+<div class="paragraph">
+<p>cat $TUTORIAL_HOME/workshop/demo-apps/pipelines/tasks/rox-image-check-task.yml
+Two variables are missing in both files: the ROX_CENTRAL_ENDPOINT and the ROX_API_TOKEN. Any automated check need to be given the correct access so that the pipeline, and cluster, cannot be breached by an external source.</p>
+</div>
+<div class="paragraph">
+<p>In the next step, access will be granted to the pipeline to be able to run these commands.</p>
+</div>
+<div class="paragraph">
+<p>Authorizing the CI Process
+First, we will need to create a token to access ACS central.</p>
+</div>
+<div class="paragraph">
+<p>Access the RHACS web user interface, select "Platform Configuration" from the left-hand side menu, and then select integrations. Scroll down to the section for authentication tokens and select "StackRox API Token."</p>
+</div>
+<div class="paragraph">
+<p>ci 1
+Press the Generate Token button in the top right corner and select the token role of "Continuous Integration." Give the token a name and press the button titled "Generate".</p>
+</div>
+<div class="paragraph">
+<p>ci 2
+Create a token name and click the 'Continuous Integration' role.</p>
+</div>
+<div class="paragraph">
+<p>Make sure to copy the token as we need to add it to the rox-secrets-mad.yml file.</p>
+</div>
+<div class="paragraph">
+<p>Next, edit the rox-secrets-mad.yml file in the demo directory. Use vi/vim/nano/your favorite command line editor to add the API token to the following file.</p>
+</div>
+<div class="paragraph">
+<p>$TUTORIAL_HOME/acs-workshop/workshop/demo-apps/pipelines/pipeline/rox-secrets-mad.yml
+NOTE: make sure to only alter the line that says rox_api_token: "YOUR_API_TOKEN_HERE"
+Then apply the changes.</p>
+</div>
+<div class="paragraph">
+<p>kubectl apply -f $TUTORIAL_HOME/workshop/demo-apps/pipelines/pipeline/rox-secrets-mad.yml
+NOTE: If you’re unfamiliar with text editors, you can also edit this via the OpenShift console. Go to Workloads → Secrets, click on ‘roxsecrets’, switch to the YAML tab and make your changes there and save them.
+You are now ready to run your pipeline!</p>
+</div>
+<div class="paragraph">
+<p>Executing the Pipeline
+First, head to the OpenShift console to execute the pipeline. Then click on the Pipelines tab to select the Pipelines dropdown.</p>
+</div>
+<div class="paragraph">
+<p>pipeline 1
+You should see a pipeline labeled rox-pipeline. Let’s run one.</p>
+</div>
+<div class="paragraph">
+<p>To run a pipeline, you can click the three dots to the left of the pipeline and click start, OR you can click on the rox-pipeline to be brought to a details page where you can select actions → start</p>
+</div>
+<div class="paragraph">
+<p>pipeline 2
+pipeline 3
+You will need to add the image you wish to scan (quay.io/mfoster/log4shell-demo:0.1.0). In this case, we want to look at the image we know has the log4shell vulnerability.</p>
+</div>
+<div class="paragraph">
+<p>pipeline 4
+Click start and ensure that the pipeline is in its running phase. It should look like the pictures below.</p>
+</div>
+<div class="paragraph">
+<p>pipeline 5
+pipeline 6
+Since this image is designed to fail, we should only have 1 of the tasks pass. Therefore the outcome will look like the following.</p>
+</div>
+<div class="paragraph">
+<p>pipeline 7
+pipeline 8
+From the image above, the log snippet shows that 5 policies have been violated.</p>
+</div>
+<div class="paragraph">
+<p>Click on the Logs tab to view the total output of the pipeline.</p>
+</div>
+<div class="paragraph">
+<p>If you expand the log snippet, you will get an output like the following.</p>
+</div>
+<div class="paragraph">
+<p>pipeline 9
+Congratulations! The log shows that the policy log4shell policy has been violated, breaking the pipeline.</p>
+</div>
+<div class="paragraph">
+<p>If this check was added to other builds/deploy pipelines, it could halt the deployment of vulnerable apps moving forward.</p>
+</div>
+<div class="paragraph">
+<p>Extra Challenge
+Suppose you are looking for a challenge. Try the following.</p>
+</div>
+<div class="paragraph">
+<p>Create a policy that will target a specific CVE deployed in the cluster (i.e., the Apache Struts violation=CVE-2013-1965) and run the pipeline again with a new container to see if the policy is triggered.</p>
+</div>
+<div class="paragraph">
+<p>Hint: Find a container with a critical vulnerability first, create the policy, and alter the pipeline.</p>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

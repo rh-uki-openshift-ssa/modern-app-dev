@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the OpenShift Roadshow Workshop :: OpenShift Roadshow Workshop 2024</title>
-    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/index.html">
+    <title>Untitled :: OpenShift Roadshow Workshop 2024</title>
+    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/08-ocp-ops-intro.html">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -167,6 +167,55 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#08-ocp-ops-intro">MAD Roadshow Ops Track</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="09-installation-and-verification.html"><strong>01</strong> - Installation and Verificiation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="10-application-management-basics.html"><strong>02</strong> - Application Management Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-application-storage-basics.html"><strong>03</strong> - Application Storage Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="12-machinesets-machines-nodes.html"><strong>04</strong> - MachineSets, Machines, and Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-infrastructure-nodes-and-operators.html"><strong>05</strong> - Infrastructure Nodes and Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="14-openshift-logging-wth-loki.html"><strong>06</strong> - OpenShift Logging with Loki</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-external-authentication.html"><strong>07</strong> - External (LDAP) Authentication Providers, Users, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="16-openshift-monitoring.html"><strong>08</strong> - OpenShift Monitoring with Prometheus</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="17-project-template-quota-limits.html"><strong>09</strong> - Project Request Template, Quotas, Limits</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="18-openshift-networking-networkpolicy.html"><strong>10</strong> - OpenShift Networking and NetworkPolicy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="19-disable-self-project-provisioning.html"><strong>11</strong> - Disabling Project Self-Provisioning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="20-cluster-resource-quota.html"><strong>12</strong> - Cluster Resource Quotas</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="21-taints-tolerations.html"><strong>13</strong> - Taints and Tolerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="22-vulnerability-scanning-acs.html"><strong>14</strong> - Vulnerability Scanning with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="23-devsecops-acs.html"><strong>15</strong> - DevSecOps with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="24-multicluster-with-acm.html"><strong>16</strong> - Multicluster management with ACM</a>
   </li>
 </ul>
   </li>
@@ -197,79 +246,14 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="index.html">OCP Roadshow Workshop</a></li>
-    <li><a href="index.html">Welcome to the OpenShift Roadshow Workshop</a></li>
-  </ul>
 </nav>
-  <div class="edit-this-page"><a href="file:///Users/mkimberl/Documents/source/github/modern-app-dev/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="file:///Users/mkimberl/Documents/source/github/modern-app-dev/documentation/modules/ROOT/pages/08-ocp-ops-intro.adoc">Edit this Page</a></div>
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the OpenShift Roadshow Workshop</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>This workshop will give you a hands on introduction to using OpenShift from the perspective of a developer, together with a view of specific topics on security, governance and management.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/04-topology-image.png" alt="Example Topology Image">
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_workshop_topics"><a class="anchor" href="#_workshop_topics"></a>Workshop Topics</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>There are two paths through this workshop.</p>
-</div>
-<div class="sect2">
-<h3 id="_application_migration_modernisation"><a class="anchor" href="#_application_migration_modernisation"></a>Application Migration &amp; Modernisation</h3>
-<div class="paragraph">
-<p>The first option has a focus on modernisation; taking an application from 'heritage' platform to running in a containerised format on OpenShift. In this section you will perform the following steps :</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Assess and Analyze an application for modernization</p>
-</li>
-<li>
-<p>Learn how to refactor and deploy a modernized application on OpenShift</p>
-</li>
-<li>
-<p>Learn how to implement CI/CD for an application on OpenShift</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_security_governance_and_cluster_management"><a class="anchor" href="#_security_governance_and_cluster_management"></a>Security, Governance and Cluster Management</h3>
-<div class="paragraph">
-<p>The second option has a focus on application and platform security, together with the management and compliance of multiple clusters. In this section you will perform the following steps :</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Learn the fundamentals of operating OpenShift clusters: Application Storage, Application Networking, Project Management, Authentication</p>
-</li>
-<li>
-<p>Learn how to discover security vulnerabilities across multi-cluster deployment</p>
-</li>
-<li>
-<p>Learn how to enforce security policies to keep applications from being run</p>
-</li>
-<li>
-<p>Learn how to deploy and manage multiple clusters with advanced cluster management</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
+
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
