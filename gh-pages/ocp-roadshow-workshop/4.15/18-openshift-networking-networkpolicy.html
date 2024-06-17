@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: OpenShift Roadshow Workshop 2024</title>
+    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/18-openshift-networking-networkpolicy.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () { 
+      const urlParams = new URLSearchParams(window.location.search);
+      const clusterName = urlParams.get('CLUSTER_SUBDOMAIN');
+      const projectName = urlParams.get('PROJECT');
+      if (clusterName) {
+        showCluster( clusterName );
+      }
+      else {
+        showClusterForm();
+      }
+
+      if (projectName) {
+        showProject( projectName );
+      } else {
+        showProjectForm();
+      }
+    } );
+
+
+    function sliceCluster(clusterName){
+      if (clusterName.length > 70) {
+          return "..." + clusterName.slice(35);
+      } else {
+          return clusterName;
+      }
+    }
+
+    function showCluster( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "none";
+      document.getElementById('navbar-form-filled').style.display = "flex";
+      document.getElementById('cluster_subdomain').textContent = sliceCluster(clusterName);
+      document.getElementById('clusterfield2').value = clusterName;
+
+    }
+
+    function showClusterForm( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "flex";
+      document.getElementById('navbar-form-filled').style.display = "none";
+    }
+
+    function gowithcluster() {
+      elClusterInput = document.getElementById('clusterfield');
+      elProjectInput = document.getElementById('projectfield2');
+
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+    function showProject( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "none";
+      document.getElementById('navbar-form-project-filled').style.display = "flex";
+      document.getElementById('project').textContent = projectName;
+      document.getElementById('projectfield2').value = projectName;
+    }
+
+    function showProjectForm( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "flex";
+      document.getElementById('navbar-form-project-filled').style.display = "none";
+    }
+
+    function gowithproject() {
+      elProjectInput = document.getElementById('projectfield');
+      elClusterInput = document.getElementById('clusterfield2');
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+  </script>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="http://localhost:3000/rhs-openshift-starter-guides/index.html">OpenShift Roadshow Workshop 2024</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item" id="navbar-form-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithcluster();">
+            <input size="40" id="clusterfield" type="text" placeholder="Enter Cluster Subdomain">
+            <input type="hidden" id="projectfield2" name="projectfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="cluster_subdomain"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+
+         <div class="navbar-item" id="navbar-form-project-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithproject();">
+            <input size="40" id="projectfield" type="text" placeholder="Enter Project Name">
+            <input type="hidden" id="clusterfield2" name="clusterfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-project-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="project"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+<!---
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+--->
+      </div>
+    </div>
+  </nav>
+</header><div class="body">
+<div class="nav-container" data-component="ocp-roadshow-workshop" data-version="4.15">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">OCP Roadshow Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-modernisation-introduction.html">Application Migration &amp; Modernisation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-introduction.html"><strong>01</strong> - Migration Workshop Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-assessment.html"><strong>02</strong> - Migration Assessment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-analyze.html"><strong>03</strong> - Migration Analysis</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#08-ocp-ops-intro">MAD Roadshow Ops Track</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="09-installation-and-verification.html"><strong>01</strong> - Installation and Verificiation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="10-application-management-basics.html"><strong>02</strong> - Application Management Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-application-storage-basics.html"><strong>03</strong> - Application Storage Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="12-machinesets-machines-nodes.html"><strong>04</strong> - MachineSets, Machines, and Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-infrastructure-nodes-and-operators.html"><strong>05</strong> - Infrastructure Nodes and Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="14-openshift-logging-wth-loki.html"><strong>06</strong> - OpenShift Logging with Loki</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-external-authentication.html"><strong>07</strong> - External (LDAP) Authentication Providers, Users, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="16-openshift-monitoring.html"><strong>08</strong> - OpenShift Monitoring with Prometheus</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="17-project-template-quota-limits.html"><strong>09</strong> - Project Request Template, Quotas, Limits</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="18-openshift-networking-networkpolicy.html"><strong>10</strong> - OpenShift Networking and NetworkPolicy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="19-disable-self-project-provisioning.html"><strong>11</strong> - Disabling Project Self-Provisioning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="20-cluster-resource-quota.html"><strong>12</strong> - Cluster Resource Quotas</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="21-taints-tolerations.html"><strong>13</strong> - Taints and Tolerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="22-vulnerability-scanning-acs.html"><strong>14</strong> - Vulnerability Scanning with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="23-devsecops-acs.html"><strong>15</strong> - DevSecOps with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="24-multicluster-with-acm.html"><strong>16</strong> - Multicluster management with ACM</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCP Roadshow Workshop</span>
+    <span class="version">4.15</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCP Roadshow Workshop</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">4.15</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">OCP Roadshow Workshop</a></li>
+    <li>MAD Roadshow Ops Track</li>
+    <li><a href="18-openshift-networking-networkpolicy.html"><strong>10</strong> - OpenShift Networking and NetworkPolicy</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/mkimberl/Documents/source/github/modern-app-dev/documentation/modules/ROOT/pages/18-openshift-networking-networkpolicy.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="paragraph">
+<p>OpenShift Networking and NetworkPolicy</p>
+</div>
+<div class="paragraph">
+<p>OpenShift Network Policy Based SDN
+OpenShift’s default software defined network (SDN) inside the platform is based on Open Virtual Network (OVN), and is called OVN-Kubernetes.</p>
+</div>
+<div class="paragraph">
+<p>Older versions of OpenShift may be running a different SDN, based on Open vSwitch called OpenShift SDN. As of OpenShift 4.12 OVN-Kubernetes has succeeded Openshift as the default SDN. To read more about OVN-Kubernetes, please read the official documentation.</p>
+</div>
+<div class="paragraph">
+<p>The SDN is used to provide connectivity between application components inside of the OpenShift environment. It comes with default network ranges pre-configured, although you can make changes to these should they conflict with your existing infrastructure, or for whatever other reason you may have.</p>
+</div>
+<div class="paragraph">
+<p>Kubernetes NetworkPolicy allows projects to truly isolate their network infrastructure inside OpenShift’s software defined network. While you have seen projects isolate resources through OpenShift’s RBAC, the network policy SDN plugin is able to isolate pods in projects using pod and namespace label selectors.</p>
+</div>
+<div class="paragraph">
+<p>Switch Your Project
+Before continuing, make sure you are using a project that actually exists. If the last thing you did in the previous lab was delete a project, this will cause errors in the scripts in this lab.</p>
+</div>
+<div class="paragraph">
+<p>oc project default
+Execute the Creation Script
+Only users with project or cluster administration privileges can manipulate Project network policies.
+Execute a script that we have prepared for you. It will create two Projects and then deploy a Deployment with a Pod for you:</p>
+</div>
+<div class="paragraph">
+<p>bash /opt/app-root/src/support/create-net-projects.sh
+Examine the created infrastructure
+Two Projects were created for you, netproj-a and netproj-b. Execute the following command to see the created resources:</p>
+</div>
+<div class="paragraph">
+<p>oc get pods -n netproj-a
+After a while you will see something like the following:</p>
+</div>
+<div class="paragraph">
+<p>NAME           READY   STATUS              RESTARTS   AGE
+ose-1-66dz2    0/1     ContainerCreating   0          7s
+ose-1-deploy   1/1     Running             0          16s
+Similarly:</p>
+</div>
+<div class="paragraph">
+<p>oc get pods -n netproj-b
+After a while you will see something like the following:</p>
+</div>
+<div class="paragraph">
+<p>NAME           READY   STATUS      RESTARTS   AGE
+ose-1-deploy   0/1     Completed   0          38s
+ose-1-vj2gn    1/1     Running     0          30s
+We will run commands inside the pod in the netproj-a Project that will connect to TCP port 5000 of the pod in the netproj-b Project.</p>
+</div>
+<div class="paragraph">
+<p>Test Connectivity (should work)
+Now that you have some projects and pods, let’s test the connectivity between the pod in the netproj-a Project and the pod in the netproj-b Project.</p>
+</div>
+<div class="paragraph">
+<p>To test connectivity between the two pods, run:</p>
+</div>
+<div class="paragraph">
+<p>bash /opt/app-root/src/support/test-connectivity.sh
+You will see something like the following:</p>
+</div>
+<div class="paragraph">
+<p>Getting Pod B&#8217;s IP&#8230;&#8203; 10.129.0.180
+Getting Pod A&#8217;s Name&#8230;&#8203; ose-1-66dz2
+Checking connectivity between Pod A and Pod B&#8230;&#8203; worked
+Note that the last line says worked. This means that the pod in the netproj-a Project was able to connect to the pod in the netproj-b Project.</p>
+</div>
+<div class="paragraph">
+<p>This worked because, by default, the networkpolicy lets all pods in all projects can connect to each other.</p>
+</div>
+<div class="paragraph">
+<p>Restricting Access
+With NetworkPolicy, it’s possible to restrict access in a project by creating a NetworkPolicy custom resource (CR).</p>
+</div>
+<div class="paragraph">
+<p>For example, the following restricts all access to all pods in a Project where this NetworkPolicy CR is applied. This is the equivalent of a DenyAll default rule on a firewall:</p>
+</div>
+<div class="paragraph">
+<p>kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-by-default
+spec:
+  podSelector:
+  ingress: []
+Note that the podSelector is empty, which means that this will apply to all pods in this Project. Also note that the ingress list is empty, which means that there are no allowed ingress rules defined by this NetworkPolicy CR.</p>
+</div>
+<div class="paragraph">
+<p>To restrict access to the pod in the netproj-b Project simply apply the above NetworkPolicy CR with:</p>
+</div>
+<div class="paragraph">
+<p>oc create -n netproj-b -f /opt/app-root/src/support/network-policy-block-all.yaml
+Test Connectivity #2 (should fail)
+Since the "block all by default" NetworkPolicy CR has been applied, connectivity between the pod in the netproj-a Project and the pod in the netproj-b Project should now be blocked.</p>
+</div>
+<div class="paragraph">
+<p>Test by running:</p>
+</div>
+<div class="paragraph">
+<p>bash /opt/app-root/src/support/test-connectivity.sh
+You will see something like the following:</p>
+</div>
+<div class="paragraph">
+<p>Getting Pod B&#8217;s IP&#8230;&#8203; 10.129.0.180
+Getting Pod A&#8217;s Name&#8230;&#8203; ose-1-66dz2
+Checking connectivity between Pod A and Pod B&#8230;&#8203;&#8230;&#8203;&#8230;&#8203;&#8230;&#8203; FAILED!
+Note the last line that says FAILED!. This means that the pod in the netproj-a Project was unable to connect to the pod in the netproj-b Project (as expected).</p>
+</div>
+<div class="paragraph">
+<p>To list all the NetworkPolicy objects, run the following:</p>
+</div>
+<div class="paragraph">
+<p>oc get networkpolicy -n netproj-b
+You should see something like the following:</p>
+</div>
+<div class="paragraph">
+<p>NAME              POD-SELECTOR   AGE
+deny-by-default   &lt;none&gt;         3m19s
+Allow Access
+With NetworkPolicy, it’s possible to allow access to individual or groups of pods in a project by creating multiple NetworkPolicy CRs.</p>
+</div>
+<div class="paragraph">
+<p>The following allows access to port 5000 on TCP for all pods in the project with the label run: ose. The pod in the netproj-b project has this label.</p>
+</div>
+<div class="paragraph">
+<p>The ingress section specifically allows this access from all projects that have the label name: netproj-a.</p>
+</div>
+<h1 id="_allow_access_to_tcp_port_5000_for_pods_with_the_label_run_ose_specifically" class="sect0"><a class="anchor" href="#_allow_access_to_tcp_port_5000_for_pods_with_the_label_run_ose_specifically"></a>allow access to TCP port 5000 for pods with the label "run: ose" specifically</h1>
+
+<h1 id="_from_projects_with_the_label_name_netproj_a" class="sect0"><a class="anchor" href="#_from_projects_with_the_label_name_netproj_a"></a>from projects with the label "name: netproj-a".</h1>
+<div class="paragraph">
+<p>kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-tcp-5000-from-netproj-a-namespace
+spec:
+  podSelector:
+    matchLabels:
+      run: ose
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 5000
+    from:
+    - namespaceSelector:
+        matchLabels:
+          name: netproj-a
+Note that the podSelector is where the local project’s pods are matched using a specific label selector.</p>
+</div>
+<div class="paragraph">
+<p>All NetworkPolicy CRs in a project are combined to create the allowed ingress access for the pods in the project. In this specific case the "deny all" policy is combined with the "allow TCP 5000" policy.</p>
+</div>
+<div class="paragraph">
+<p>To allow access to the pod in the netproj-b Project from all pods in the netproj-a Project, apply the above NetworkPolicy CR with:</p>
+</div>
+<div class="paragraph">
+<p>oc create -n netproj-b -f /opt/app-root/src/support/network-policy-allow-all-from-netproj-a.yaml
+Listing the NetworkPolicies:</p>
+</div>
+<div class="paragraph">
+<p>oc get networkpolicy -n netproj-b
+This should show the new policy in place</p>
+</div>
+<div class="paragraph">
+<p>NAME                                      POD-SELECTOR   AGE
+allow-tcp-5000-from-netproj-a-namespace   run=ose        81s
+deny-by-default                           &lt;none&gt;         7m11s
+Test Connectivity #3 (should work again)
+Since the "allow access from netproj-a on port 5000" NetworkPolicy has been applied, connectivity between the pod in the netproj-a Project and the pod in the netproj-b Project should be allowed again.</p>
+</div>
+<div class="paragraph">
+<p>Test by running:</p>
+</div>
+<div class="paragraph">
+<p>bash /opt/app-root/src/support/test-connectivity.sh
+You will see something like the following:</p>
+</div>
+<div class="paragraph">
+<p>Getting Pod B&#8217;s IP&#8230;&#8203; 10.129.0.180
+Getting Pod A&#8217;s Name&#8230;&#8203; ose-1-66dz2
+Checking connectivity between Pod A and Pod B&#8230;&#8203; worked
+Note the last line that says worked. This means that the pod in the netproj-a Project was able to connect to the pod in the netproj-b Project (as expected).</p>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: OpenShift Roadshow Workshop 2024</title>
+    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/20-cluster-resource-quota.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () { 
+      const urlParams = new URLSearchParams(window.location.search);
+      const clusterName = urlParams.get('CLUSTER_SUBDOMAIN');
+      const projectName = urlParams.get('PROJECT');
+      if (clusterName) {
+        showCluster( clusterName );
+      }
+      else {
+        showClusterForm();
+      }
+
+      if (projectName) {
+        showProject( projectName );
+      } else {
+        showProjectForm();
+      }
+    } );
+
+
+    function sliceCluster(clusterName){
+      if (clusterName.length > 70) {
+          return "..." + clusterName.slice(35);
+      } else {
+          return clusterName;
+      }
+    }
+
+    function showCluster( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "none";
+      document.getElementById('navbar-form-filled').style.display = "flex";
+      document.getElementById('cluster_subdomain').textContent = sliceCluster(clusterName);
+      document.getElementById('clusterfield2').value = clusterName;
+
+    }
+
+    function showClusterForm( clusterName ) {
+      document.getElementById('navbar-form-empty').style.display = "flex";
+      document.getElementById('navbar-form-filled').style.display = "none";
+    }
+
+    function gowithcluster() {
+      elClusterInput = document.getElementById('clusterfield');
+      elProjectInput = document.getElementById('projectfield2');
+
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+    function showProject( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "none";
+      document.getElementById('navbar-form-project-filled').style.display = "flex";
+      document.getElementById('project').textContent = projectName;
+      document.getElementById('projectfield2').value = projectName;
+    }
+
+    function showProjectForm( projectName ) {
+      document.getElementById('navbar-form-project-empty').style.display = "flex";
+      document.getElementById('navbar-form-project-filled').style.display = "none";
+    }
+
+    function gowithproject() {
+      elProjectInput = document.getElementById('projectfield');
+      elClusterInput = document.getElementById('clusterfield2');
+      window.location.search = ('&CLUSTER_SUBDOMAIN=' + elClusterInput.value + '&PROJECT=' + elProjectInput.value);
+    }
+
+  </script>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="http://localhost:3000/rhs-openshift-starter-guides/index.html">OpenShift Roadshow Workshop 2024</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item" id="navbar-form-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithcluster();">
+            <input size="40" id="clusterfield" type="text" placeholder="Enter Cluster Subdomain">
+            <input type="hidden" id="projectfield2" name="projectfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="cluster_subdomain"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+
+         <div class="navbar-item" id="navbar-form-project-empty">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="gowithproject();">
+            <input size="40" id="projectfield" type="text" placeholder="Enter Project Name">
+            <input type="hidden" id="clusterfield2" name="clusterfield2" value="">
+          </form>
+        </div>
+
+        <div class="navbar-item" id="navbar-form-project-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="project"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+<!---
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+--->
+      </div>
+    </div>
+  </nav>
+</header><div class="body">
+<div class="nav-container" data-component="ocp-roadshow-workshop" data-version="4.15">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">OCP Roadshow Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-modernisation-introduction.html">Application Migration &amp; Modernisation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-introduction.html"><strong>01</strong> - Migration Workshop Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-assessment.html"><strong>02</strong> - Migration Assessment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-analyze.html"><strong>03</strong> - Migration Analysis</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#08-ocp-ops-intro">MAD Roadshow Ops Track</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="09-installation-and-verification.html"><strong>01</strong> - Installation and Verificiation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="10-application-management-basics.html"><strong>02</strong> - Application Management Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-application-storage-basics.html"><strong>03</strong> - Application Storage Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="12-machinesets-machines-nodes.html"><strong>04</strong> - MachineSets, Machines, and Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-infrastructure-nodes-and-operators.html"><strong>05</strong> - Infrastructure Nodes and Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="14-openshift-logging-wth-loki.html"><strong>06</strong> - OpenShift Logging with Loki</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-external-authentication.html"><strong>07</strong> - External (LDAP) Authentication Providers, Users, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="16-openshift-monitoring.html"><strong>08</strong> - OpenShift Monitoring with Prometheus</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="17-project-template-quota-limits.html"><strong>09</strong> - Project Request Template, Quotas, Limits</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="18-openshift-networking-networkpolicy.html"><strong>10</strong> - OpenShift Networking and NetworkPolicy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="19-disable-self-project-provisioning.html"><strong>11</strong> - Disabling Project Self-Provisioning</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="20-cluster-resource-quota.html"><strong>12</strong> - Cluster Resource Quotas</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="21-taints-tolerations.html"><strong>13</strong> - Taints and Tolerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="22-vulnerability-scanning-acs.html"><strong>14</strong> - Vulnerability Scanning with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="23-devsecops-acs.html"><strong>15</strong> - DevSecOps with ACS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="24-multicluster-with-acm.html"><strong>16</strong> - Multicluster management with ACM</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCP Roadshow Workshop</span>
+    <span class="version">4.15</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCP Roadshow Workshop</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">4.15</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">OCP Roadshow Workshop</a></li>
+    <li>MAD Roadshow Ops Track</li>
+    <li><a href="20-cluster-resource-quota.html"><strong>12</strong> - Cluster Resource Quotas</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/mkimberl/Documents/source/github/modern-app-dev/documentation/modules/ROOT/pages/20-cluster-resource-quota.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="paragraph">
+<p>Cluster Resource Quotas</p>
+</div>
+<div class="paragraph">
+<p>Cluster resource quotas
+Before continuing, make sure you’ve done the LDAP lab.
+In a previous lab, you worked with quotas and saw how they could be applied to projects. You also set up default quotas, so anytime someone requests a new project; they get assigned the default quota. These project quotas are great for maintaining control over the resources in your cluster.</p>
+</div>
+<div class="paragraph">
+<p>But what if you want to apply a quota not to individual projects, but across projects?</p>
+</div>
+<div class="paragraph">
+<p>Use cases
+There are two primary usecases where you would use clusterresourcequota instead of a project based quota. One of which, is when you want to set quotas on a specific user. This is useful when you want users to create as much projects as they need (thus achiving great multitenancy), but you want to limit the amount of resource they can consume.</p>
+</div>
+<div class="paragraph">
+<p>The other use case is if you want to set a quota by application vertical. In this case, you want to set the quota on an application stack wholistically; as an application stack can span multiple OpenShift Projects.</p>
+</div>
+<div class="paragraph">
+<p>In this lab, we will be exploring both use cases.</p>
+</div>
+<div class="paragraph">
+<p>Setting quota per user
+In order to set a clusterresourcequota to a user you need to be kubeadmin</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+Now, set a quota for the normaluser1. We will be using the annotation key of openshift.io/requester= to identify the projects that will have these quotas assigned to. For this exercise, we will set a hard quota against creating more than 10 pods. Please ignore any deprecation warnings.</p>
+</div>
+<div class="paragraph">
+<p>oc create clusterquota for-user-normaluser1 \
+    --project-annotation-selector openshift.io/requester=normaluser1 \
+    --hard pods=10
+The syntax is openshift.io/requester=&lt;username&gt;.
+View the configuration.</p>
+</div>
+<div class="paragraph">
+<p>oc get clusterresourcequotas for-user-normaluser1 -o yaml
+The configuration should look something like this:</p>
+</div>
+<div class="paragraph">
+<p>apiVersion: quota.openshift.io/v1
+kind: ClusterResourceQuota
+metadata:
+  creationTimestamp: "2022-09-12T15:47:24Z"
+  generation: 1
+  name: for-user-normaluser1
+  resourceVersion: "786378"
+  uid: 575364ba-124d-4307-9bd2-f32dfe474389
+spec:
+  quota:
+    hard:
+      pods: "10"
+  selector:
+    annotations:
+      openshift.io/requester: normaluser1
+    labels: null
+This user, normaluser1, can create no more than 10 pods accross all the projects he creates. This applies only to projects that he as created (based on the openshift.io/requester: normaluser1 annotation), not any projects he has access to. More on this later.</p>
+</div>
+<div class="paragraph">
+<p>Now, login as normaluser1</p>
+</div>
+<div class="paragraph">
+<p>oc login -u normaluser1 -p Op#nSh1ft
+List all your current projects</p>
+</div>
+<div class="paragraph">
+<p>oc get projects
+This user shouldn’t have any projects, and you should see output similar to this (don’t worry if you do though):</p>
+</div>
+<div class="paragraph">
+<p>No resources found.
+Create two projects welcome1 and welcome2.</p>
+</div>
+<div class="paragraph">
+<p>oc new-project welcome1
+oc new-project welcome2
+You’ll be creating two applications. One in the welcome1 project and the other in the welcome2 project.</p>
+</div>
+<div class="paragraph">
+<p>oc new-app -n welcome1 --name=php1 quay.io/redhatworkshops/welcome-php:latest
+oc new-app -n welcome2 --name=php2 quay.io/redhatworkshops/welcome-php:latest
+After the deployment, you should have two running pods. One in each namespace. Check it with the oc get pods command (You may have to run this a few times before you see any output):</p>
+</div>
+<div class="paragraph">
+<p>oc get pods -n welcome1 -l deployment=php1
+oc get pods -n welcome2 -l deployment=php2
+The output should look something like this:</p>
+</div>
+<div class="paragraph">
+<p>[~] $ oc get pods -n welcome1 -l deployment=php1
+NAME           READY   STATUS    RESTARTS   AGE
+php1-1-nww4m   1/1     Running   0          4m20s
+[~] $ oc get pods -n welcome2 -l deployment=php2
+NAME           READY   STATUS    RESTARTS   AGE
+php2-1-ljw9w   1/1     Running   0          4m20s
+Now we can check the quota by first becoming kubeadmin:</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+Now run oc describe clusterresourcequotas for-user-normaluser1 to see the status of the quota:</p>
+</div>
+<div class="paragraph">
+<p>oc describe clusterresourcequotas for-user-normaluser1
+You should see the following output:</p>
+</div>
+<div class="paragraph">
+<p>Name:		for-user-normaluser1
+Created:	22 minutes ago
+Labels:		&lt;none&gt;
+Annotations:	&lt;none&gt;
+Namespace Selector: ["welcome1" "welcome2"]
+Label Selector:
+AnnotationSelector: map[openshift.io/requester:normaluser1]
+Resource	Used	Hard
+--------	----	----
+pods		2	10
+You see that not only that 2 out of 10 pods are being used, but that the namespaces the quota is being applied to. Check the namespace manifest for welcome1 to see the annotation the quota is looking for:</p>
+</div>
+<div class="paragraph">
+<p>oc get namespace welcome1 -o yaml
+The output should look something like this. Take special note of the annotations:</p>
+</div>
+<div class="paragraph">
+<p>apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: ""
+    openshift.io/requester: normaluser1
+    openshift.io/sa.scc.mcs: s0:c27,c9
+    openshift.io/sa.scc.supplemental-groups: 1000720000/10000
+    openshift.io/sa.scc.uid-range: 1000720000/10000
+  creationTimestamp: "2022-02-15T00:18:30Z"
+  labels:
+    kubernetes.io/metadata.name: welcome1
+  name: welcome1
+  resourceVersion: "59245"
+  uid: 75612ea5-aa5d-4c99-a28c-0604efe0f457
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+Now as normaluser1, try to scale your apps beyond 10 pods:</p>
+</div>
+<div class="paragraph">
+<p>oc login -u normaluser1 -p Op#nSh1ft
+oc scale deploy/php1 -n welcome1 --replicas=5
+oc scale deploy/php2 -n welcome2 --replicas=6
+Take a note of how many pods are running:</p>
+</div>
+<div class="paragraph">
+<p>oc get pods --no-headers -n welcome1 -l deployment=php1 | wc -l
+oc get pods --no-headers -n welcome2 -l deployment=php2 | wc -l
+Both of these commands should return no more than 10 added up together. Check the events to see the quota in action!</p>
+</div>
+<div class="paragraph">
+<p>oc get events -n welcome1 | grep "quota" | head -1
+oc get events -n welcome2 | grep "quota" | head -1
+You should see a message like the following.</p>
+</div>
+<div class="paragraph">
+<p>3m24s       Warning   FailedCreate        replicaset/php1-89fcb8d8b    Error creating: pods "php1-89fcb8d8b-spdw2" is forbid
+den: exceeded quota: for-user-normaluser1, requested: pods=1, used: pods=10, limited: pods=10
+To see the status, switch to the kubeadmin account and run the describe command from before:</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+oc describe clusterresourcequotas for-user-normaluser1
+You should see that the hard pod limit has been reached</p>
+</div>
+<div class="paragraph">
+<p>Name:           for-user-normaluser1
+Created:        15 minutes ago
+Labels:         &lt;none&gt;
+Annotations:    &lt;none&gt;
+Namespace Selector: ["welcome1" "welcome2"]
+Label Selector:
+AnnotationSelector: map[openshift.io/requester:normaluser1]
+Resource        Used    Hard
+--------        ----    ----
+pods            10      10
+Setting quota by label
+In order to set a quota by application stacks that may span multiple projects, you’ll have to use labels to identify the project. First, make sure you’re kubeadmin</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+Now set a quota based on a label. For this lab we will use appstack=pricelist key/value based label to identify projects.</p>
+</div>
+<div class="paragraph">
+<p>oc create clusterresourcequota for-pricelist \
+    --project-label-selector=appstack=pricelist \
+    --hard=pods=5
+Now create two projects:</p>
+</div>
+<div class="paragraph">
+<p>oc adm new-project pricelist-frontend
+oc adm new-project pricelist-backend
+Assign the edit role to the user normaluser1 for these two projects:</p>
+</div>
+<div class="paragraph">
+<p>oc adm policy add-role-to-user edit normaluser1 -n pricelist-frontend
+oc adm policy add-role-to-user edit normaluser1 -n pricelist-backend
+To identify these two projects to belonging to the pricelist application stack, you will need to label the corresponding namespace:</p>
+</div>
+<div class="paragraph">
+<p>oc label namespace pricelist-frontend appstack=pricelist
+oc label namespace pricelist-backend appstack=pricelist
+Run the oc describe command for the for-pricelist cluster resource quota:</p>
+</div>
+<div class="paragraph">
+<p>oc describe clusterresourcequotas for-pricelist
+You should see that both of the projects are now being tracked:</p>
+</div>
+<div class="paragraph">
+<p>Name:           for-pricelist
+Created:        21 seconds ago
+Labels:         &lt;none&gt;
+Annotations:    &lt;none&gt;
+Namespace Selector: ["pricelist-frontend" "pricelist-backend"]
+Label Selector: appstack=pricelist
+AnnotationSelector: map[]
+Resource        Used    Hard
+--------        ----    ----
+pods            0       5
+Login as normaluser1 and create the applications in their respective projects:</p>
+</div>
+<div class="paragraph">
+<p>oc login -u normaluser1 -p Op#nSh1ft
+oc new-app -n pricelist-frontend --name frontend quay.io/redhatworkshops/pricelist:frontend
+oc new-app -n pricelist-backend --name backend quay.io/redhatworkshops/pricelist:backend
+Check the status of the quota by logging in as kubeadmin and running the describe command:</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+oc describe clusterresourcequotas for-pricelist
+You should see that 2 out of 5 pods are being used against this quota:</p>
+</div>
+<div class="paragraph">
+<p>Name:           for-pricelist
+Created:        About a minute ago
+Labels:         &lt;none&gt;
+Annotations:    &lt;none&gt;
+Namespace Selector: ["pricelist-frontend" "pricelist-backend"]
+Label Selector: appstack=pricelist
+AnnotationSelector: map[]
+Resource        Used    Hard
+--------        ----    ----
+pods            2       5
+The user normaluser1 can create more pods because pricelist-frontend and pricelist-backend were assigned to the user by kubeadmin. They don’t have the openshift.io/requester=normaluser1 annotation since normaluser1 didn’t create them. You can already see how you can mix and match quota polices to fit your envrionment.
+Test this by logging back in as normaluser1 and try to scale the applications beyond 5 pods total.</p>
+</div>
+<div class="paragraph">
+<p>oc login -u normaluser1 -p Op#nSh1ft
+oc scale -n pricelist-frontend deploy/frontend --replicas=3
+oc scale -n pricelist-backend deploy/backend --replicas=3
+Just like before, you should see an error about not being able to scale:</p>
+</div>
+<div class="paragraph">
+<p>oc get events -n pricelist-frontend | grep "quota" | head -1
+oc get events -n pricelist-backend | grep "quota" | head -1
+The output should be like the other exercise:</p>
+</div>
+<div class="paragraph">
+<p>39s         Warning   FailedCreate        replicaset/backend-577cf89b68   Error creating: pods "backend-577cf89b68-l5svw" is
+ forbidden: exceeded quota: for-pricelist, requested: pods=1, used: pods=5, limited: pods=5
+Clean Up
+Clean up the work you did by first becoming kubeadmin:</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+These quotas may interfere with other labs; so delete both of the clusterresourcequota we created in this lab:</p>
+</div>
+<div class="paragraph">
+<p>oc delete clusterresourcequotas for-pricelist for-user-normaluser1
+Also delete the projects we created for this lab:</p>
+</div>
+<div class="paragraph">
+<p>oc delete projects pricelist-backend pricelist-frontend welcome1 welcome2
+Make sure you login as kubeadmin in an existing project for the next lab.</p>
+</div>
+<div class="paragraph">
+<p>oc login -u kubeadmin -p 4nyNM-BZtvz-Btyng-dTexX
+oc project default</p>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
