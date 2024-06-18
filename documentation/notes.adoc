@@ -1,0 +1,4 @@
+== Setup notes
+
+1. Install the Web Terminal operator on all clusters.
+

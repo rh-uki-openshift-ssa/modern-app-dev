@@ -230,7 +230,7 @@
 <h2 id="_goal_of_the_workshop"><a class="anchor" href="#_goal_of_the_workshop"></a>Goal of the Workshop</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this 30 minute session, participants will learn how to work with Red Hat Advanced Cluster Management for Kubernetes (RHACM)</p>
+<p>In this session, participants will learn how to work with Red Hat Advanced Cluster Management for Kubernetes (RHACM)</p>
 </div>
 <div class="paragraph">
 <p>Participants will walk through these 3 major use cases:</p>
@@ -301,17 +301,16 @@
 <div class="paragraph">
 <p>In the demo console where you have all the credentials, you will find the <strong>OCP Console URL, Username and Password, AWS credentials</strong>, <strong>Access Key ID</strong>, <strong>Secret Access Key</strong>, and the <strong>Base DNS Domain</strong>.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>To get started, switch over to the <strong>OpenShift Console</strong>
-{{ MASTER_URL }}</p>
-</li>
-<li>
-<p>Remember that the login is <strong>kubeadmin</strong> and the <strong>password</strong> is:
-{{ KUBEADMIN_PASSWORD }}</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>To get started, switch over to the <strong>OpenShift Console</strong></p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://console-openshift-console.%CLUSTER_SUBDOMAIN%</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Login with the provided credentials.</p>
 </div>
 <div class="paragraph">
 <p>Once you have logged in to OpenShift Console, Navigate to the <strong>Cluster drop down menu</strong> and then select  <strong>All Clusters</strong> this will bring you to the RHACM interface.</p>
@@ -507,7 +506,7 @@
 </div>
 </li>
 <li>
-<p>Verify that <strong>Deploy application resources only on clusters matching specified labels</strong> is selected and enter the following information</p>
+<p>In the section title : <strong>Deploy application resources only on clusters matching specified labels</strong> ensure that the <strong>global</strong> cluster set is selected and also select the label and value as :</p>
 <div class="ulist">
 <ul>
 <li>
@@ -519,6 +518,18 @@
 </ul>
 </div>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is shown in the image below :</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/cluster-set-and-label-selection.png" alt="OpenShift Pod">
+</div>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Verify all the information is correct. Click <strong>Create</strong></p>
 </li>
@@ -534,6 +545,9 @@
 </div>
 <div class="paragraph">
 <p>Under the topology view, Select the <strong>Route</strong> and click on the <strong>Launch Route</strong> <strong>URL</strong>, this will take you to the Book Import application with several books available.</p>
+</div>
+<div class="paragraph">
+<p>[NOTE] The URL is a http:// url and not a https:// url. Your browser may default to switching http:// to https://. If the application fails to launch then please edit the url to be http:// and it should load the application.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -713,7 +727,7 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Enter a namespace to place the policy, default name space is OK to use</p>
+<p>Enter a namespace to place the policy, <strong>default</strong> name space is OK to use</p>
 </li>
 <li>
 <p>Click <strong>Next</strong> till the end and then <strong>Submit</strong></p>
@@ -737,142 +751,6 @@ spec:
 <div class="content">
 <img src="_images/acm_governance_yaml2.png" alt="acm governance yaml2">
 </div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_using_policy_generator"><a class="anchor" href="#_using_policy_generator"></a>Using Policy Generator</h3>
-<div class="paragraph">
-<p>This Policy Generator definition will achieve 2 configuration policies:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>openshift-gitops-installed:</strong> The goal of the first one is to inform if the OpenShift GitOps operator is installed on managed clusters.</p>
-</li>
-<li>
-<p><strong>kubeadmin-removed:</strong> The goal of this second policy is to inform if the kubeadmin user is removed from managed clusters.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Both policies are informative only and will only execute them manually to showcase how to resolve issues.</p>
-</div>
-<div class="paragraph">
-<p>In order to deliver these policies we will need to leverage the RHACM Application engine and the GitOps Subcription model.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Navigate to <strong>Applications</strong></p>
-</li>
-<li>
-<p>Click <strong>Create application, select Subscription</strong>. Enter the following information:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Name</strong>: <code>policy-generator</code></p>
-</li>
-<li>
-<p><strong>Namespace</strong>: <code>policy-generator</code></p>
-</li>
-<li>
-<p>Under repository types, select the <strong>GIT</strong> repository</p>
-</li>
-<li>
-<p><strong>URL:</strong>  <a href="https://github.com/levenhagen/demo-policygenerator">https://github.com/levenhagen/demo-policygenerator.git</a></p>
-</li>
-<li>
-<p><strong>Branch</strong>:  <code>main</code></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Verify that <strong>Deploy only to local cluster</strong> is selected</p>
-</li>
-<li>
-<p>Verify all the information is correct. Click <strong>Create</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>It will take a few minutes to deploy the application, <strong>Click</strong> on the <strong>Topology Tab</strong> to view and verify that <strong>all of the circles are green</strong>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/acm-topology2.png" alt="acm topology2">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Navigate to the <strong>Governance</strong> tab</p>
-</li>
-<li>
-<p>Click on the <strong>Policies</strong> tab</p>
-</li>
-<li>
-<p>Verify that you see 2 policies and that there <strong>Cluster Violations</strong> count is 1</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>kubeadmin-removed</strong></p>
-</li>
-<li>
-<p><strong>openshift-gitops-installed</strong></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/acm-policy.png" alt="acm policy">
-</div>
-</div>
-<div class="paragraph">
-<p>Now that the policies have been created for us leveraing the Policy Generator Engine let&#8217;s go ahead and enforce them.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>On the <strong>openshift-gitops-installed</strong> policy, click on the elipses and set policy to <strong>Enfornce</strong></p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/acm-policy2.png" alt="acm policy2">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click the <strong>Enforce</strong> button to verify</p>
-</li>
-<li>
-<p>Wait a few minutes and you will see that the <strong>Cluster Violations</strong> will go from <strong>red</strong> to <strong>green</strong></p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/acm-policy3.png" alt="acm policy3">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click on the Policy and select <strong>Results</strong> verify that the gitops operator has been installed.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Feel free to repeat the steps with the <strong>kubeadmin-removed</strong> Policy, however if you enforce this you won&#8217;t be able to access that cluster through the console as the only account created on these clusters is Kubadmin.</p>
-</div>
-<div class="paragraph">
-<p>Now you have succesfully created a Policy leveraing the Policy Generator to scan your clusters, if you would like to play with other policies please visit the <a href="https://github.com/stolostron/policy-collection">Policy Repo</a> for more Policies you can test out.</p>
 </div>
 <div class="paragraph">
 <p>In Summary, we worked with a OpenShift Hosted Control Plane cluster, deploy applications and manage policies all with Red Hat Advanced Cluster Management for Kubernetes, making it much easier to build, manage and secure your Kubernetes Clusters.</p>
