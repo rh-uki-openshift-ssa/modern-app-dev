@@ -37,6 +37,15 @@ Only users with project or cluster administration privileges can manipulate *Pro
 network policies.
 ====
 
+=== Clone the git repository for content :
+
+Run the command below to clone the Git repository of assets.
+
+[source,bash,role="execute"]
+----
+git clone {{ GIT_URL_SOURCE }}
+----
+
 Execute a script that we have prepared for you. It will create two
 *Projects* and then deploy a *Deployment* with a *Pod* for you:
 
@@ -79,6 +88,7 @@ ose-1-vj2gn    1/1     Running     0          30s
 
 We will run commands inside the pod in the `netproj-a` *Project* that will
 connect to TCP port 5000 of the pod in the `netproj-b` *Project*.
+
 
 ### Test Connectivity (should work)
 Now that you have some projects and pods, let's test the connectivity between

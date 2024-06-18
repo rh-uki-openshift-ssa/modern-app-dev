@@ -23,6 +23,8 @@ asciidoc:
     app-2: layer-2
     app-3: layer-3
     app-4: layer-4
+    HOME_PATH: modern-app-dev
+    GIT_URL_SOURCE: https://github.com/rh-uki-openshift-ssa/modern-app-dev.git
   extensions:
     - ./lib/remote-include-processor.js
     - ./lib/tab-block.js
