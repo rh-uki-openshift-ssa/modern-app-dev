@@ -23,7 +23,7 @@ Read more about it in the https://access.redhat.com/documentation/en-us/migratio
 
 == 3.1. Analyze Customers Application using MTA
 
-First, you need to configure *Git repositories* to refer to your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] when you analyze your inventory and applications using MTA.
+First, you need to configure *Git repositories* to refer to your https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev when you analyze your inventory and applications using MTA.
 
 In *Administration* view, select *Repositories > Git*. `Toggle` the *Consume insecure Git repositories* switch to the right.
 
@@ -31,10 +31,7 @@ image::mta-admin-git.png[admin git]
 
 [NOTE]
 ====
-You can also log in to the Gitea repository with the following credentials.
-
-* Username - `%USERID%`
-* Password - `{openshift-password}`
+You can log in to the Gitea repository with the provide credentials.
 ====
 
 Go back to the `Application inventory` page in the *Migration* perspective. Click on pencil (edit) icon for the customers inventory.
@@ -42,7 +39,7 @@ Go back to the `Application inventory` page in the *Migration* perspective. Clic
 Update application with the following source code information.
 
 * Repository type - `Git`
-* Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
+* Source Repository - `https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev.git`
 * Branch - `main`
 * Root path - `package-legacy`
 
@@ -93,7 +90,7 @@ Select `Repository` tab to refer to a custom rule (`corporate-framework-config.w
 Key in the following information in the repository page.
 
 * Repository type - `Git`
-* Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
+* Source Repository - `https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev.git`
 * Branch - `main`
 * Root path - `customrules`
 * Associated credentials - `None`
@@ -179,4 +176,4 @@ You can now see exactly where the issue is located in the source code.
 
 == Summary
 
-You have now successfully analyzed the legacy application to learn what migration issues you have. You'll refactor the application to fix the issues in the next module. Then, you'll deploy the modernized application to Red Hat OpenShift. Let's go!
+You have now successfully analyzed the legacy application to learn what migration issues you have. 

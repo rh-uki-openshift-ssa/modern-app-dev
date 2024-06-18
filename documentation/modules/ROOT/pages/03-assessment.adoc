@@ -11,7 +11,7 @@ The goal of this lab is to assess the current application portfolio and identify
 
 To start the assessment of the existing applications we will use the https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^]. We will use _MTA_ to assess the `Customers` service based on the _Tomcat_ server on Red Hat Virtualization.
 
-Open a new browser to access the https://mta-mta-%USERID%.%SUBDOMAIN%[MTA Web Console^].
+Copy the URL : https://mta-mta-%PROJECT%.%CLUSTER_SUBDOMAIN% and paste it into a new browser tab to access the Migration Toolkit for Applications web user interface.
 
 You will see existing application inventories such as *Customers*, *Orders*, *Inventory*, and more.
 
@@ -64,11 +64,11 @@ Let's focus on the legacy application. We have added tags that represent its tec
 
 === 2.3.1. Confirm the Customers Application Inventory
 
-Go to `Application inventory` on the left menu in the *Migration* perspective and click on `pencil` (edit) icon for the customers inventory.
+Go to `Application inventory` on the left menu in the *Migration* perspective and click on `pencil` (edit) icon for the customers inventory. Do this before pressing the button with the red box around it.
 
 image::app-inventory-landing.png[app-inventory-landing]
 
-When you click on `2 more` button, it shows 5 tags.
+In the tags section, when you click on `2 more` button, it shows 5 tags.
 
 * Oracle
 * Java

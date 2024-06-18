@@ -276,7 +276,7 @@
 <h2 id="_3_1_analyze_customers_application_using_mta"><a class="anchor" href="#_3_1_analyze_customers_application_using_mta"></a>3.1. Analyze Customers Application using MTA</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First, you need to configure <strong>Git repositories</strong> to refer to your <a href="https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev" target="_blank" rel="noopener">Gitea repository</a> when you analyze your inventory and applications using MTA.</p>
+<p>First, you need to configure <strong>Git repositories</strong> to refer to your <a href="https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev" class="bare">https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev</a> when you analyze your inventory and applications using MTA.</p>
 </div>
 <div class="paragraph">
 <p>In <strong>Administration</strong> view, select <strong>Repositories &gt; Git</strong>. <code>Toggle</code> the <strong>Consume insecure Git repositories</strong> switch to the right.</p>
@@ -294,17 +294,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>You can also log in to the Gitea repository with the following credentials.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Username - <code>%USERID%</code></p>
-</li>
-<li>
-<p>Password - <code>{openshift-password}</code></p>
-</li>
-</ul>
+<p>You can log in to the Gitea repository with the provide credentials.</p>
 </div>
 </td>
 </tr>
@@ -322,7 +312,7 @@
 <p>Repository type - <code>Git</code></p>
 </li>
 <li>
-<p>Source Repository - <code><a href="https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git" class="bare">https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git</a></code></p>
+<p>Source Repository - <code><a href="https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev.git" class="bare">https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev.git</a></code></p>
 </li>
 <li>
 <p>Branch - <code>main</code></p>
@@ -418,7 +408,7 @@
 <p>Repository type - <code>Git</code></p>
 </li>
 <li>
-<p>Source Repository - <code><a href="https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git" class="bare">https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git</a></code></p>
+<p>Source Repository - <code><a href="https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev.git" class="bare">https://gitea.%CLUSTER_SUBDOMAIN%/%PROJECT%/modern-app-dev.git</a></code></p>
 </li>
 <li>
 <p>Branch - <code>main</code></p>
@@ -606,7 +596,7 @@ Story points are an abstract metric commonly used in Agile software development 
 <h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You have now successfully analyzed the legacy application to learn what migration issues you have. You&#8217;ll refactor the application to fix the issues in the next module. Then, you&#8217;ll deploy the modernized application to Red Hat OpenShift. Let&#8217;s go!</p>
+<p>You have now successfully analyzed the legacy application to learn what migration issues you have.</p>
 </div>
 </div>
 </div>
