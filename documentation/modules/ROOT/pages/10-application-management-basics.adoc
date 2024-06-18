@@ -60,10 +60,11 @@ Pods are treated as static objects by OpenShift, i.e., one cannot change the pod
 You can get a list of pods:
 
 [.console-input]
-[bash,source]
+[source,bash]
 ----
 oc get pods
 ----
+
 And you will see something like the following:
 
 [.console]
@@ -79,7 +80,7 @@ Pod names are dynamically generated as part of the deployment process, which you
 The describe command will give you more information on the details of a pod. In the case of the pod name above:
 
 [.console-input]
-[bash,source]
+[source,bash]
 ----
 oc describe pod -l deployment=mapit
 ----
@@ -241,7 +242,7 @@ Information about all objects (their definition, their state, and so forth) is s
 Take a look at the YAML output for the service:
 
 [.console-input]
-[bash,source]
+[source,bash]
 ----
 oc get service mapit -o yaml
 ----
@@ -647,7 +648,7 @@ The oc set command can be used to perform several different functions, one of wh
 [.console-input]
 [source, bash]
 ----
-curl mapit-app-management.apps.cluster-kswh5.kswh5.sandbox1208.opentlc.com/health
+curl http://mapit-app-management.apps.cluster-kswh5.kswh5.sandbox1208.opentlc.com/health
 ----
 You will get some JSON as a response:
 

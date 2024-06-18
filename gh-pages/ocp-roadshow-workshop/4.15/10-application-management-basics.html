@@ -173,7 +173,7 @@
     <a class="nav-link" href="10-application-management-basics.html"><strong>04</strong> - Application Management Basics</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#11-app-storage-basics.adoc"><strong>05</strong> - Application Storage Basics</a>
+    <a class="nav-link" href="11-application-storage-basics.html"><strong>05</strong> - Application Storage Basics</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="13-networking.html"><strong>06</strong> - Networking</a>
@@ -320,7 +320,7 @@ g one or more of the commands below:
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre>oc get pods</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -351,7 +351,7 @@ mapit-764c5bf8b8-l49z7   1/1     Running   0          2m53s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre>oc describe pod -l deployment=mapit</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe pod -l deployment=mapit</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -556,7 +556,7 @@ Events:            &lt;none&gt;</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre>oc get service mapit -o yaml</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get service mapit -o yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1107,7 +1107,7 @@ oc expose service mapit</pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl mapit-app-management.apps.cluster-kswh5.kswh5.sandbox1208.opentlc.com/health</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://mapit-app-management.apps.cluster-kswh5.kswh5.sandbox1208.opentlc.com/health</code></pre>
 </div>
 </div>
 <div class="paragraph">
