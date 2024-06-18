@@ -43,7 +43,7 @@ Run the command below to clone the Git repository of assets.
 
 [source,bash,role="execute"]
 ----
-git clone {{ GIT_URL_SOURCE }}
+git clone https://github.com/rh-uki-openshift-ssa/modern-app-dev.git
 ----
 
 Execute a script that we have prepared for you. It will create two
@@ -51,7 +51,7 @@ Execute a script that we have prepared for you. It will create two
 
 [source,bash,role="execute"]
 ----
-bash {{ HOME_PATH }}/support/create-net-projects.sh
+bash modern-app-dev/support/create-net-projects.sh
 ----
 
 ### Examine the created infrastructure
@@ -98,7 +98,7 @@ To test connectivity between the two pods, run:
 
 [source,bash,role="execute"]
 ----
-bash {{ HOME_PATH }}/support/test-connectivity.sh
+bash modern-app-dev/support/test-connectivity.sh
 ----
 
 You will see something like the following:
@@ -146,7 +146,7 @@ above NetworkPolicy CR with:
 
 [source,bash,role="execute"]
 ----
-oc create -n netproj-b -f {{ HOME_PATH }}/support/network-policy-block-all.yaml
+oc create -n netproj-b -f modern-app-dev/support/network-policy-block-all.yaml
 ----
 
 ### Test Connectivity #2 (should fail)
@@ -158,7 +158,7 @@ Test by running:
 
 [source,bash,role="execute"]
 ----
-bash {{ HOME_PATH }}/support/test-connectivity.sh
+bash modern-app-dev/support/test-connectivity.sh
 ----
 
 You will see something like the following:
@@ -234,7 +234,7 @@ To allow access to the pod in the `netproj-b` *Project* from all pods in the
 
 [source,bash,role="execute"]
 ----
-oc create -n netproj-b -f {{ HOME_PATH }}/support/network-policy-allow-all-from-netproj-a.yaml
+oc create -n netproj-b -f modern-app-dev/support/network-policy-allow-all-from-netproj-a.yaml
 ----
 
 Listing the *NetworkPolicies*:
@@ -262,7 +262,7 @@ Test by running:
 
 [source,bash,role="execute"]
 ----
-bash {{ HOME_PATH }}/support/test-connectivity.sh
+bash modern-app-dev/support/test-connectivity.sh
 ----
 
 You will see something like the following:

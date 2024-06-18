@@ -284,7 +284,7 @@ network policies.</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone {{ GIT_URL_SOURCE }}</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/rh-uki-openshift-ssa/modern-app-dev.git</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -293,7 +293,7 @@ network policies.</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash {{ HOME_PATH }}/support/create-net-projects.sh</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash modern-app-dev/support/create-net-projects.sh</code></pre>
 </div>
 </div>
 </div>
@@ -352,7 +352,7 @@ the pod in the <code>netproj-a</code> <strong>Project</strong> and the pod in th
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash {{ HOME_PATH }}/support/test-connectivity.sh</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash modern-app-dev/support/test-connectivity.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -409,7 +409,7 @@ above NetworkPolicy CR with:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -n netproj-b -f {{ HOME_PATH }}/support/network-policy-block-all.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -n netproj-b -f modern-app-dev/support/network-policy-block-all.yaml</code></pre>
 </div>
 </div>
 </div>
@@ -425,7 +425,7 @@ connectivity between the pod in the <code>netproj-a</code> <strong>Project</stro
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash {{ HOME_PATH }}/support/test-connectivity.sh</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash modern-app-dev/support/test-connectivity.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -513,7 +513,7 @@ all" policy is combined with the "allow TCP 5000" policy.</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -n netproj-b -f {{ HOME_PATH }}/support/network-policy-allow-all-from-netproj-a.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -n netproj-b -f modern-app-dev/support/network-policy-allow-all-from-netproj-a.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -547,7 +547,7 @@ connectivity between the pod in the <code>netproj-a</code> <strong>Project</stro
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash {{ HOME_PATH }}/support/test-connectivity.sh</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash modern-app-dev/support/test-connectivity.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
