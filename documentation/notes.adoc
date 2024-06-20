@@ -1,4 +1,6 @@
 == Setup notes
 
-1. Install the Web Terminal operator on all clusters.
+1. Install the Web Terminal operator on all ops clusters.
+2. Grab the text required for each user on the RHPDS cluster info.
+3. Install the app for the workshop guide.
 

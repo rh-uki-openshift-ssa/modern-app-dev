@@ -648,7 +648,7 @@ The oc set command can be used to perform several different functions, one of wh
 [.console-input]
 [source, bash]
 ----
-curl http://mapit-app-management.apps.cluster-kswh5.kswh5.sandbox1208.opentlc.com/health
+curl http://mapit-app-management.%CLUSTER_SUBDOMAIN%/health
 ----
 You will get some JSON as a response:
 
