@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Application Management Basics :: OpenShift Roadshow Workshop 2024</title>
-    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/10-application-management-basics.html">
+    <link rel="canonical" href="http://localhost:3000/rhs-openshift-starter-guides/index.html/ocp-roadshow-workshop/4.15/11-application-management-basics.html">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -151,6 +151,9 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="xx-workshop-credentials-links.html">Credentials and links</a>
+  </li>
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="01-modernisation-introduction.html">Application Migration &amp; Modernisation</a>
 <ul class="nav-list">
@@ -170,10 +173,10 @@
     <a class="nav-link" href="10-security-infrastructure-introduction.html">Security &amp; Infrastructure</a>
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="10-application-management-basics.html"><strong>04</strong> - Application Management Basics</a>
+    <a class="nav-link" href="11-application-management-basics.html"><strong>04</strong> - Application Management Basics</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="11-application-storage-basics.html"><strong>05</strong> - Application Storage Basics</a>
+    <a class="nav-link" href="12-application-storage-basics.html"><strong>05</strong> - Application Storage Basics</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="13-networking.html"><strong>06</strong> - Networking</a>
@@ -218,18 +221,20 @@
   <ul>
     <li><a href="index.html">OCP Roadshow Workshop</a></li>
     <li><a href="10-security-infrastructure-introduction.html">Security &amp; Infrastructure</a></li>
-    <li><a href="10-application-management-basics.html"><strong>04</strong> - Application Management Basics</a></li>
+    <li><a href="11-application-management-basics.html"><strong>04</strong> - Application Management Basics</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="file:///home/marrober/data/git-repos/rhuki-openshift-ssa/modern-app-dev/documentation/modules/ROOT/pages/10-application-management-basics.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="file:///home/marrober/data/git-repos/rhuki-openshift-ssa/modern-app-dev/documentation/modules/ROOT/pages/11-application-management-basics.adoc">Edit this Page</a></div>
 </div>
   <div class="content">
 <article class="doc">
 <h1 class="page">Application Management Basics</h1>
-<div class="sect2">
-<h3 id="_application_management_basics"><a class="anchor" href="#_application_management_basics"></a>Application Management Basics</h3>
+<div class="sect1">
+<h2 id="_application_management_basics"><a class="anchor" href="#_application_management_basics"></a>Application Management Basics</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>In this module, you will deploy a sample application using the oc tool and learn about some of the core concepts, fundamental objects, and basics of application management on OpenShift Container Platform.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -713,12 +718,21 @@ status:
 <div class="paragraph">
 <p>A <strong>Deployment</strong> (deploy) defines how something in OpenShift should be deployed. From the deployments documentation:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>Deployments describe the desired state of a particular component of an
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Deployments describe the desired state of a particular component of an
 application as a Pod template. Deployments create ReplicaSets, which
-orchestrate Pod lifecycles.</pre>
+orchestrate Pod lifecycles.</p>
 </div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>In almost all cases, you will end up using the Pod, Service, ReplicaSet and Deployment resources together. And, in almost all of those cases, OpenShift will create all of them for you.</p>
@@ -1051,12 +1065,21 @@ mapit   mapit-app-management.apps.cluster-kswh5.kswh5.sandbox1208.opentlc.com   
 <div class="paragraph">
 <p>If you take a step back to examine everything you’ve done so far, in three commands you deployed an application, scaled it, and made it accessible to the outside world:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>oc new-app quay.io/openshiftroadshow/mapit
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>oc new-app quay.io/openshiftroadshow/mapit
 oc scale --replicas=2 deploy/mapit
-oc expose service mapit</pre>
+oc expose service mapit</p>
 </div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

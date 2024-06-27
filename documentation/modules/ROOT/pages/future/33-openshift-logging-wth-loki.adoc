@@ -394,7 +394,7 @@ To have access to audit logs, we need to set up the log forwarder. We will start
 Replace the current displayed YAML with the new YAML:
 
 [.console]
-[sourcem,yaml]
+[source,yaml]
 ----
 apiVersion: logging.openshift.io/v1
 kind: ClusterLogForwarder

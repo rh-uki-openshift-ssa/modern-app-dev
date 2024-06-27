@@ -1,6 +1,6 @@
 = Application Management Basics
 
-=== Application Management Basics
+== Application Management Basics
 In this module, you will deploy a sample application using the oc tool and learn about some of the core concepts, fundamental objects, and basics of application management on OpenShift Container Platform.
 
 == Core OpenShift Concepts
@@ -371,11 +371,11 @@ While *Services* provide routing and load balancing for *Pods*, which may go in 
 A *Deployment* (deploy) defines how something in OpenShift should be deployed. From the deployments documentation:
 
 [NOTE]
-----
+====
 Deployments describe the desired state of a particular component of an
 application as a Pod template. Deployments create ReplicaSets, which
 orchestrate Pod lifecycles.
-----
+====
 
 In almost all cases, you will end up using the Pod, Service, ReplicaSet and Deployment resources together. And, in almost all of those cases, OpenShift will create all of them for you.
 
@@ -613,11 +613,11 @@ The Route is associated with the Service, and the router automatically proxies c
 
 If you take a step back to examine everything you’ve done so far, in three commands you deployed an application, scaled it, and made it accessible to the outside world:
 [NOTE]
-----
+====
 oc new-app quay.io/openshiftroadshow/mapit
 oc scale --replicas=2 deploy/mapit
 oc expose service mapit
-----
+====
 == Scale Down
 
 Before we continue, go ahead and scale your application down to a single instance:

@@ -96,8 +96,8 @@ The following allows access to port 5000 on TCP for all pods in the project with
 
 The ingress section specifically allows this access from all projects that have the label name: netproj-a.
 
-# allow access to TCP port 5000 for pods with the label "run: ose" specifically
-# from projects with the label "name: netproj-a".
+* allow access to TCP port 5000 for pods with the label "run: ose" specifically from projects with the label "name: netproj-a".
+
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
@@ -114,6 +114,7 @@ spec:
     - namespaceSelector:
         matchLabels:
           name: netproj-a
+          
 Note that the podSelector is where the local project’s pods are matched using a specific label selector.
 
 All NetworkPolicy CRs in a project are combined to create the allowed ingress access for the pods in the project. In this specific case the "deny all" policy is combined with the "allow TCP 5000" policy.

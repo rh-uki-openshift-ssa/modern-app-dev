@@ -31,7 +31,8 @@ oc project default
 ----
 
 ### Execute the Creation Script
-[Note]
+
+[NOTE]
 ====
 Only users with project or cluster administration privileges can manipulate *Project*
 network policies.

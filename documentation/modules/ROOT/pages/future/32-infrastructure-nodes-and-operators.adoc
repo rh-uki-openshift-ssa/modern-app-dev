@@ -332,7 +332,7 @@ oc get configs.imageregistry.operator.openshift.io/cluster -o yaml
 ----
 You will see something like:
 [.console]
-[souorce,yaml]
+[source,yaml]
 ----
 apiVersion: imageregistry.operator.openshift.io/v1
 kind: Config

@@ -57,7 +57,7 @@ export GUID=`hostname | cut -d. -f2`
 == Master Components
 
 image::openshift_master_4_responsibilities.png[Master Components]
-==== Figure 1. OpenShift Master’s 4 main responsibilities.
+Figure 1. OpenShift Master’s 4 main responsibilities.
 
 === API/Authentication
 The Kubernetes API server validates and configures the resources that make up a Kubernetes cluster.
