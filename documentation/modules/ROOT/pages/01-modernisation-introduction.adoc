@@ -28,7 +28,7 @@ To access the web based command line interface simply press on the '>_' icon in 
 
 image::index-02-web-terminal-launch.png[Launching the web terminal,400,align="left"]
 
-This will launch the command line terminal at the bottom of the screen. After a short wait you will see the following text :
+This will launch the command line terminal at the bottom of the screen. you may need to select a project, and for this initial step you can select any project that is associated with your username. After a short wait you will see the following text :
 
 [.source]
 ----
@@ -57,5 +57,3 @@ In the top right corner of the command line window there are three buttons.
 * The cross will close the terminal.
 
 That is all the setup work done - you are now ready to start experimenting in the next chapters.
-
-This is a test

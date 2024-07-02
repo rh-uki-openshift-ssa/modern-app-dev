@@ -60,7 +60,7 @@ for (def counter = 0; counter < numberLines; counter++) {
 
         def headerURL = "";
 
-        for (headerCounter = 2; headerCounter < clusterForHeader.size(); headerCounter++) {
+        for (headerCounter = 1; headerCounter < clusterForHeader.size(); headerCounter++) {
             headerURL += clusterForHeader[headerCounter];
             headerURL +=".";
         }
